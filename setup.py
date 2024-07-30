@@ -11,6 +11,7 @@ setup(
         'numpy>=2.0.1',
         'opencv-python>=4.10.0.84',
         'PyQt5>=5.15.9',
+        'pyyaml>=5.4.1',
     ],
     entry_points={
         'console_scripts': [

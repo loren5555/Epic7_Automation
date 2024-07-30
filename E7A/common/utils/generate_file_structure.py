@@ -10,7 +10,7 @@ ignore_list = [
 ]
 
 
-def generate_file_structure(root_dir):
+def generate_file_structure(root_dir: str) -> str:
     file_structure = []
     for root, dirs, files in os.walk(root_dir):
         if os.path.basename(root) in ignore_list:

@@ -1,14 +1,16 @@
-import subprocess
 import os
 import re
 import ast
+import subprocess
+
 from shutil import copyfile
 from enum import Enum
+from typing import Optional
 
 import cv2
 
-from E7A.utils.logger import Logger
-from E7A.utils.error_handler import ErrorHandlingMixin
+from common.logger import Logger
+from E7A.common.error_handler import ErrorHandlingMixin
 
 
 # emulator states
@@ -33,23 +35,40 @@ class MumuReturnCode(Enum):
 
 
 class MuMuEmulator(ErrorHandlingMixin):
-    def __init__(self, vm_index: int = 0, vm_name: str = None, logger=None):
+    """
+    A Class for controlling the mu-mu emulator through MuMuManager.
+    For MuMuManager API, see "doc/MUMUCmd.txt"
+    """
+    def __init__(self, vm_index: int = 0, vm_name: str = None, logger: Logger = None):
+        """
+        Bind to a certain emulator in MuMU Emulator.
+
+        :param vm_index: the index in mumu manager. If vm_name provided, this parameter is ignored.
+        :param vm_name: the nmme in mumu manager
+        :param logger: logger
+        """
         super().__init__(logger)
-        # 定义vm_name后name代替index指定命令对象。
         self.index = str(vm_index)
-        self.name = vm_name
-        self.identifier = self.index if self.name is None else self.name
+        self.name: Optional[str] = vm_name
+        self.identifier: str = self.index if self.name is None else self.name    # 用于传给Mumumanager的模拟器标识
+        self.app_list: dict = {"App list not initialized": None}
+        self.state: EmulatorState = EmulatorState.UNINITIALIZED
+
         if logger is not None:
-            self.logger = logger.get_child_logger("Emulator")
+            self.logger = logger.get_child_logger("MuMuEmulator")
         else:
-            self.logger = Logger("Emulator")
+            self.logger = Logger("MuMuEmulator")
 
-        self.app_list = {"App list not initialized": None}
-
-        self.state = EmulatorState.UNINITIALIZED
         self.update_player_state()
 
-    def execute_command(self, command: str, shell=False):
+    def execute_command(self, command: str, shell: bool = False):
+        """
+        Run command and return process.
+
+        :param command: A CMD command in string format.
+        :param shell: A param of subprocess.run.
+        :return: Process output.
+        """
         self.logger.debug("Command: [" + command + "]")
         process = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=shell)
         return process
@@ -61,12 +80,13 @@ class MuMuEmulator(ErrorHandlingMixin):
         self.logger.info("Emulator starting.")
 
     def shutdown(self):
+        # shutdown emulator
         self.execute_command(f"mumumanager api -v {self.identifier} shutdown_player")
         self.logger.info("Emulator shutting down.")
 
-    def update_player_state(self):
-        process = self.execute_command(f"mumumanager api -v {self.identifier} player_state")
-        state_info = process.stdout.decode("utf-8").strip()
+    def update_player_state(self) -> None:
+        process = self.execute_command(f"mumumanager api -v {self.identifier} player_state") # 检查状态
+        state_info = process.stdout.decode("utf-8").strip()  # API 输出
 
         if process.returncode == MumuReturnCode.PLAYER_NOT_RUNNING.value:
             self.state = EmulatorState.STOPPED
@@ -125,19 +145,19 @@ class MuMuEmulator(ErrorHandlingMixin):
     def launch_app(self, app_name: str):
         app_state = self.get_app_state(app_name)
 
-        if app_state == AppState.INEXISTENCE.value:
+        if app_state == AppState.INEXISTENCE:
             # app不存在
             self.error(f"App [{app_name}] not found.")
-        elif app_state == AppState.RUNNING.value:
+        elif app_state == AppState.RUNNING:
             # app正在运行
             self.warning(f"App [{app_name}] already running.")
-        elif app_state == AppState.STOPPED.value:
+        elif app_state == AppState.STOPPED:
             # app没有运行，启动app
             self.info(f"Starting app [{app_name}].")
             self.execute_command(
                 f"mumumanager api -v {self.identifier} launch_app {self.app_list[app_name]['packageName']}"
             )
-        elif app_state == AppState.OTHER.value:
+        elif app_state == AppState.OTHER:
             # state返回值为other或其他未知情况
             self.error(f"Unexpected state info: {app_state}")
 
