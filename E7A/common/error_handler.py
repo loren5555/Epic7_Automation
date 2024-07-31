@@ -10,7 +10,8 @@ class ErrorHandlingMixin:
         try:
             return func(*args, **kwargs)
         except subprocess.CalledProcessError as e:
-            self.logger.error(f"Command failed with {e.returncode}: {e.output}")    # 命令行错误
+            # 命令行错误
+            self.logger.error(f"Command failed with {e.returncode}: {e.output}")
         except Exception as e:
             self.logger.error(f"Unhandled exception: {e}")
 

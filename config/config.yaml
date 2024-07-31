@@ -1,13 +1,8 @@
 logger:
   logger_name: "Epic7_Automation"
-  log_dir: "C:/Users/loren/Projects/Epic7_Automation_Python/log"
-  log_name: "E7A_TIMESTAMP"
+  log_dir: "C:/Users/loren/Projects/Epic7_Automation_Python/log"  # log文件夹路径
+  log_name: "E7A_TIMESTAMP" # log文件主名
 
 emulator:
-  vm_index: 0
-  vm_name: ~
-
-#name: abc
-#li:
-#  -list1
-#  -list2
+  vm_index: 0  # 虚拟机编号
+  vm_name: ~  # 虚拟机名

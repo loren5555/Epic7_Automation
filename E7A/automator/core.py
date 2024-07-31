@@ -10,14 +10,14 @@ from E7A.ui.epic7_automator_UI import E7AutoMainWindow
 
 
 def main():
-    Config.load_config(r"C:\Users\loren\Projects\Epic7_Automation_Python\config\config.yaml")
-
+    Config.load_config(
+        r"C:\Users\loren\Projects\Epic7_Automation_Python\config\config.yaml"
+    )
+    TIMESTAMP = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime(time.time()))
     logger = Logger(
             logger_name=Config.logger.logger_name,
             log_dir=Config.logger.log_dir,
-            log_name=Config.logger.log_name.replace(
-                "TIMESTAMP", time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime(time.time()))
-            )
+            log_name=Config.logger.log_name.replace("TIMESTAMP", TIMESTAMP)
     )
 
     emulator = MuMuEmulator(

@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QMainWindow, QGraphicsScene, QWidget, QPushButton
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import Qt, QThread, pyqtSignal, pyqtSlot
 
-from E7A.utils.logger import Logger
+from common.logger import Logger
 from E7A.emulator.emulator import MuMuEmulator, EmulatorState
 from E7A.ui.epic7_automator_main_window import Ui_MainWindow
 
@@ -109,7 +109,6 @@ class E7AutoMainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot()
     def on_emulator_not_ready(self):
         self.logger.info("Emulator not ready yet...")
-        print("Emulator not ready")
 
     def populate_app_list(self):
         if self.emulator.state != EmulatorState.READY:
@@ -133,7 +132,7 @@ class E7AutoMainWindow(QMainWindow, Ui_MainWindow):
         self.logger.info("Emulator shutdown")
 
     def take_screenshot(self):
-        image = self.emulator.get_screenshot()
+        image = self.emulator.take_screenshot()
         height, width, channels = image.shape
         bytes_per_line = 3 * width
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)

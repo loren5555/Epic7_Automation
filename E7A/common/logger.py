@@ -14,7 +14,7 @@ class Logger(logging.Logger):
             logger_level: int = logging.DEBUG,
             console_log: bool = True,
             console_log_level: int = logging.NOTSET,
-            file_log: bool = True,
+            file_log: bool = False,
             file_log_level: bool = logging.NOTSET,
             fmt: str = "{asctime} | {levelname:<8} | {name:<14} |{message}",
             datefmt: str = "%Y-%m-%d %H:%M:%S",
@@ -39,7 +39,8 @@ class Logger(logging.Logger):
 
         if os.path.exists(log_dir) is False:
             os.makedirs(log_dir)
-        log_path = os.path.join(log_dir, log_name + ".log") # file_path = dir + main_name + .log
+        # file_path = dir + main_name + .log
+        log_path = os.path.join(log_dir, log_name + ".log")
         formatter = logging.Formatter(fmt=fmt, datefmt=datefmt, style="{")
 
         if console_log is True:
