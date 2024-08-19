@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>UIScreenshotWindow</class>
+ <widget class="QMainWindow" name="UIScreenshotWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>877</width>
+    <height>507</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Screenshot</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QGraphicsView" name="screenshot_view">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="midLineWidth">
+       <number>0</number>
+      </property>
+      <property name="interactive">
+       <bool>false</bool>
+      </property>
+      <property name="renderHints">
+       <set>QPainter::Antialiasing</set>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>877</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="update_screenshot_action"/>
+   <addaction name="toggle_scrcpy_action"/>
+  </widget>
+  <action name="update_screenshot_action">
+   <property name="icon">
+    <iconset>
+     <normaloff>D:/Storage/WorkinProgress/fugue-icons-3.5.6-src/bonus/icons-32/monitor.png</normaloff>D:/Storage/WorkinProgress/fugue-icons-3.5.6-src/bonus/icons-32/monitor.png</iconset>
+   </property>
+   <property name="text">
+    <string>更新截图</string>
+   </property>
+  </action>
+  <action name="toggle_scrcpy_action">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>D:/Storage/WorkinProgress/fugue-icons-3.5.6-src/bonus/icons-32/film.png</normaloff>D:/Storage/WorkinProgress/fugue-icons-3.5.6-src/bonus/icons-32/film.png</iconset>
+   </property>
+   <property name="text">
+    <string>toggle_scrcpy</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

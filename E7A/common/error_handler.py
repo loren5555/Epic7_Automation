@@ -1,25 +1,16 @@
 import subprocess
+from contextlib import contextmanager
+from E7A.common.logger import Logger
 
 
-class ErrorHandlingMixin:
-    def __init__(self, logger):
-        self.logger = logger
-
-    @staticmethod
-    def __handle_error(self, func, *args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except subprocess.CalledProcessError as e:
-            # 命令行错误
-            self.logger.error(f"Command failed with {e.returncode}: {e.output}")
-        except Exception as e:
-            self.logger.error(f"Unhandled exception: {e}")
-
-    def __getattr__(self, item):
-        attr = object.__getattribute__(self, item)
-        if callable(attr):
-            def wrapper(*args, **kwargs):
-                result = self.__handle_error(attr, *args, **kwargs)
-                return result
-            return wrapper
-        return attr
+@contextmanager
+def error_handler(logger: Logger):
+    try:
+        yield
+    except subprocess.CalledProcessError as e:
+        logger.error(
+            f"Command failed with return code: {e.returncode}: {e.output.decode('utf-8')}"
+        )
+    except Exception as e:
+        logger.error(f"Unhandled {e.__class__.__name__}: {e}")
+        # raise e from e

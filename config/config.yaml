@@ -2,7 +2,15 @@ logger:
   logger_name: "Epic7_Automation"
   log_dir: "C:/Users/loren/Projects/Epic7_Automation_Python/log"  # log文件夹路径
   log_name: "E7A_TIMESTAMP" # log文件主名
+  fmt: "{asctime} | {levelname:<8} | {name:<18} |{message}"
 
 emulator:
   vm_index: 0  # 虚拟机编号
   vm_name: ~  # 虚拟机名
+  adb_address: "127.0.0.1:16384"
+
+ui:
+  screenshot_save_dir: "C:/Users/loren/Projects/Epic7_Automation_Python/temp/"
+  screenshot_save_dir_help: "emulator's screenshot save dir, used to find screenshot files."
+  screenshot_file_name: "screenshot_cache.png"
+  screenshot_file_name_help: "The screenshot will be saved with this name by emulator and read by UI."
